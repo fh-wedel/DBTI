@@ -33,8 +33,8 @@ func init() {
 		panic(err)
 	}
 	// SetReplacementStrategy(randomReplacementStrategy)
-	SetReplacementStrategy(lruReplacementStrategy)
-	// SetReplacementStrategy(clockReplacementStrategy)
+	// SetReplacementStrategy(lruReplacementStrategy)
+	SetReplacementStrategy(clockReplacementStrategy)
 	emptyBuffer()
 	// showBuffer()
 }

@@ -48,6 +48,7 @@ func clockReplacementStrategy() (int, error) {
 	// log.Println("clockReplacementStrategy")
 	start := s.clock
 	for {
+		round := 1
 		// log.Printf("trying %d counter = %d", s.clock, s.counters[s.clock])
 		if s.counters[s.clock] == 0 {
 			p := &s.buffer[s.clock]
@@ -62,9 +63,9 @@ func clockReplacementStrategy() (int, error) {
 
 		s.clock = (s.clock + 1) % buffersize
 
-		if s.clock == start { // no more free pages
-			// log.Println("pages exhausted")
+		if s.clock == start && round == 2 { // no more free pages
 			return -1, errors.New("references exhausted")
 		}
+		round += 1
 	}
 }

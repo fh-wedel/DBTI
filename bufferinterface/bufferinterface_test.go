@@ -97,7 +97,10 @@ func TestUnfix(t *testing.T) {
 	} else {
 
 		// now fill the buffer with pages, unfixed page should go
-		for i := 0; i < 2*buffersize; i++ {
+		for i := 0; i < 2*buffersize+1; i++ {
+			if i == 9 {
+				continue // don't reference it again
+			}
 			if _, err := Request(i); err != nil {
 				t.Error(err)
 				return
@@ -176,11 +179,11 @@ func TestBlockFill(t *testing.T) {
 		p[5] = '*'
 		Update(i)
 	}
-	showBuffer()
+	// showBuffer()
 
-	if err := flush(); err != nil {
+	if err := Flush(); err != nil {
 		t.Error(err)
 		return
 	}
-	showBuffer()
+	// showBuffer()
 }

@@ -162,20 +162,21 @@ func showBuffer() {
 }
 
 // record that a page is referenced
-func reference(pageNo int) {
+func reference(no int) {
 	// log.Printf("references %v", pageNo)
 
 	// for lruReplacementStrategy
 	// if previously referenced, remove it
 	for i, el := range s.references {
-		if el == pageNo {
+		if el == no {
 			s.references = append(s.references[:i], s.references[i+1:]...)
 			break
 		}
 	}
-	s.references = append(s.references, pageNo)
+	s.references = append(s.references, no)
 	// log.Printf("references %v", s.references)
 
 	// for clockReplacementStategy
-	s.counters[s.clock] = 1
+	s.counters[no] = 1
+	// log.Printf("counters=%v", s.counters)
 }

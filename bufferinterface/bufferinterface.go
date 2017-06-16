@@ -124,3 +124,13 @@ func SetReplacementStrategy(strategy replacementStrategy) error {
 	s.pageToReplace = strategy
 	return nil
 }
+
+// free all pages writing all modified pages
+func Flush() error {
+	for i, _ := range s.buffer {
+		if err := freePage(i); err != nil {
+			return err
+		}
+	}
+	return nil
+}

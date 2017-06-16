@@ -128,16 +128,6 @@ func writePage(page *Page) error {
 	return err
 }
 
-// free all pages writing all modified pages
-func flush() error {
-	for i, _ := range s.buffer {
-		if err := freePage(i); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // initialize buffer
 func emptyBuffer() {
 	for i := 0; i < buffersize; i++ {

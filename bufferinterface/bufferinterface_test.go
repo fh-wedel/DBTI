@@ -176,8 +176,11 @@ func TestBlockFill(t *testing.T) {
 		p[5] = '*'
 		Update(i)
 	}
+	showBuffer()
+
 	if err := flush(); err != nil {
 		t.Error(err)
 		return
 	}
+	showBuffer()
 }

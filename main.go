@@ -28,12 +28,32 @@ func main() {
 			fmt.Printf("help\t\tThis help\n")
 			fmt.Printf("quit\t\tExit interaction\n")
 			fmt.Printf("page <n>\tShow page n\n")
+			fmt.Printf("erase <n>\tFill page n with zero byte\n")
 			fmt.Println()
 			continue
 		}
 
 		if strings.HasPrefix(cmd, "quit") {
+			bufferinterface.Flush()
 			break
+		}
+
+		if strings.HasPrefix(cmd, "erase") {
+			pageNo, err := strconv.Atoi(strings.Split(cmd, " ")[1])
+			if err != nil {
+				fmt.Println(err.Error)
+				continue
+			}
+			p, err := bufferinterface.Request(pageNo)
+			if err != nil {
+				fmt.Printf(err.Error())
+			} else {
+				for i := 5; i < bufferinterface.PageSize; i++ {
+					p[i] = 0
+				}
+				bufferinterface.Update(pageNo)
+			}
+			continue
 		}
 
 		if strings.HasPrefix(cmd, "page") {

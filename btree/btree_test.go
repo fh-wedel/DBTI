@@ -6,6 +6,21 @@ import (
 	"testing"
 )
 
+func check(t *testing.T, bt *Btree, key string, expected int) {
+	i, found := bt.Find(key)
+	if !found {
+		t.Errorf("Value %v not found although inserted", key)
+	} else if i != expected {
+		t.Errorf("Expected %v but found %v", expected, i)
+	}
+}
+
+func checkMissing(t *testing.T, bt *Btree, key string) {
+	_, found := bt.Find(key)
+	if found {
+		t.Errorf("Value %v found although not present", key)
+	}
+}
 func TestNew(t *testing.T) {
 	NewBtree("a", 1, "b", 2)
 }
@@ -41,66 +56,16 @@ func TestFind1(t *testing.T) {
 
 	bt := &Btree{z0: &b0, entries: [2 * k]entry{entry{"c", 3, &b1}, entry{"f", 6, &b2}}}
 
-	i, found := bt.Find("a")
-	if !found {
-		t.Error("Value a not found although present")
-	} else if i != 1 {
-		t.Errorf("Expected 1 but found %v", i)
-	}
+	check(t, bt, "a", 1)
+	check(t, bt, "b", 2)
+	check(t, bt, "c", 3)
+	check(t, bt, "d", 4)
+	check(t, bt, "e", 5)
+	check(t, bt, "f", 6)
+	check(t, bt, "g", 7)
+	check(t, bt, "h", 8)
 
-	i, found = bt.Find("b")
-	if !found {
-		t.Error("Value b not found although present")
-	} else if i != 2 {
-		t.Errorf("Expected 2 but found %v", i)
-	}
-
-	i, found = bt.Find("c")
-	if !found {
-		t.Error("Value c not found although present")
-	} else if i != 3 {
-		t.Errorf("Expected 3 but found %v", i)
-	}
-
-	i, found = bt.Find("d")
-	if !found {
-		t.Error("Value d not found although present")
-	} else if i != 4 {
-		t.Errorf("Expected 4 but found %v", i)
-	}
-
-	i, found = bt.Find("e")
-	if !found {
-		t.Error("Value e not found although present")
-	} else if i != 5 {
-		t.Errorf("Expected 5 but found %v", i)
-	}
-
-	i, found = bt.Find("f")
-	if !found {
-		t.Error("Value f not found although present")
-	} else if i != 6 {
-		t.Errorf("Expected 6 but found %v", i)
-	}
-
-	i, found = bt.Find("g")
-	if !found {
-		t.Error("Value g not found although present")
-	} else if i != 7 {
-		t.Errorf("Expected 7 but found %v", i)
-	}
-
-	i, found = bt.Find("h")
-	if !found {
-		t.Error("Value h not found although present")
-	} else if i != 8 {
-		t.Errorf("Expected 8 but found %v", i)
-	}
-
-	i, found = bt.Find("x")
-	if found {
-		t.Error("Value x found although not present")
-	}
+	checkMissing(t, bt, "x")
 
 }
 
@@ -114,100 +79,22 @@ func TestFind2(t *testing.T) {
 
 	bt := &Btree{z0: &b0, entries: [2 * k]entry{entry{"c", 3, &b1}, entry{"f", 6, &b2}}}
 
-	i, found := bt.Find("a")
-	if !found {
-		t.Error("Value a not found although present")
-	} else if i != 1 {
-		t.Errorf("Expected 1 but found %v", i)
-	}
+	check(t, bt, "a", 1)
+	check(t, bt, "b", 2)
+	check(t, bt, "c", 3)
+	check(t, bt, "d", 4)
+	check(t, bt, "e", 5)
+	check(t, bt, "f", 6)
+	check(t, bt, "g", 7)
+	check(t, bt, "h", 8)
 
-	i, found = bt.Find("b")
-	if !found {
-		t.Error("Value b not found although present")
-	} else if i != 2 {
-		t.Errorf("Expected 2 but found %v", i)
-	}
+	check(t, bt, "b2", 1)
+	check(t, bt, "b3", 2)
 
-	i, found = bt.Find("c")
-	if !found {
-		t.Error("Value c not found although present")
-	} else if i != 3 {
-		t.Errorf("Expected 3 but found %v", i)
-	}
-
-	i, found = bt.Find("d")
-	if !found {
-		t.Error("Value d not found although present")
-	} else if i != 4 {
-		t.Errorf("Expected 4 but found %v", i)
-	}
-
-	i, found = bt.Find("e")
-	if !found {
-		t.Error("Value e not found although present")
-	} else if i != 5 {
-		t.Errorf("Expected 5 but found %v", i)
-	}
-
-	i, found = bt.Find("f")
-	if !found {
-		t.Error("Value f not found although present")
-	} else if i != 6 {
-		t.Errorf("Expected 6 but found %v", i)
-	}
-
-	i, found = bt.Find("g")
-	if !found {
-		t.Error("Value g not found although present")
-	} else if i != 7 {
-		t.Errorf("Expected 7 but found %v", i)
-	}
-
-	i, found = bt.Find("h")
-	if !found {
-		t.Error("Value h not found although present")
-	} else if i != 8 {
-		t.Errorf("Expected 8 but found %v", i)
-	}
-
-	i, found = bt.Find("b2")
-	if !found {
-		t.Error("Value h not found although present")
-	} else if i != 1 {
-		t.Errorf("Expected 1 but found %v", i)
-	}
-
-	i, found = bt.Find("b3")
-	if !found {
-		t.Error("Value h not found although present")
-	} else if i != 2 {
-		t.Errorf("Expected 2 but found %v", i)
-	}
-
-	i, found = bt.Find("x")
-	if found {
-		t.Error("Value x found although not present")
-	}
-
+	checkMissing(t, bt, "x")
 }
 
 func TestFind3(t *testing.T) {
-}
-
-func check(t *testing.T, bt *Btree, key string, expected int) {
-	i, found := bt.Find(key)
-	if !found {
-		t.Errorf("Value %v not found although inserted", key)
-	} else if i != expected {
-		t.Errorf("Expected %v but found %v", expected, i)
-	}
-}
-
-func checkMissing(t *testing.T, bt *Btree, key string) {
-	_, found := bt.Find(key)
-	if found {
-		t.Errorf("Value %v found although not present", key)
-	}
 }
 
 func TestInsertExists(t *testing.T) {
